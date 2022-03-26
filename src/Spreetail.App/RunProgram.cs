@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Spreetail.Core.Services.HelpCommandService;
+using Spreetail.Core.Services.ConsoleService;
 
 namespace Spreetail.App
 {
@@ -13,12 +14,18 @@ namespace Spreetail.App
         private readonly IAddCommandService<string, string> _addCommandService;
         private readonly IHelpCommandService _helpCommandService;
         private readonly Dictionary<string, ICommand> _commandMapping;
+        private readonly IConsoleService _consoleService;
 
-        public RunProgram(IAddCommandService<string, string> addCommandService, 
-            IHelpCommandService helpCommandService)
+        public RunProgram(
+            IAddCommandService<string, string> addCommandService,
+            IHelpCommandService helpCommandService, 
+            IConsoleService consoleService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
+            _consoleService = consoleService;
+            
+            
             _commandMapping = new Dictionary<string, ICommand>()
             {
                 { "add", _addCommandService},
@@ -31,8 +38,8 @@ namespace Spreetail.App
             string userInput = "";
             do
             {
-                Console.WriteLine("Please enter a command?");
-                userInput = Console.ReadLine();
+                _consoleService.WriteLine("Please enter a command?");
+                userInput = _consoleService.ReadLine();
                 if (ShouldExit(userInput)) 
                 {
                     break;
@@ -67,11 +74,11 @@ namespace Spreetail.App
                     {
                         throw new InvalidOperationException("Could not cast command");
                     }
-                    Console.WriteLine("");
+                    _consoleService.WriteLine("");
                 }
             } while (true);
-            
-            Console.WriteLine("Goodbye!");
+
+            _consoleService.WriteLine("Goodbye");
         }
 
         private string[] ParserInput(string userInput)

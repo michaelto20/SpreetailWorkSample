@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Spreetail.App\Spreetail.App.csproj" />
+    <ProjectReference Include="..\..\src\Spreetail.Core\Spreetail.Core.csproj" />
+  </ItemGroup>
+
 </Project>
