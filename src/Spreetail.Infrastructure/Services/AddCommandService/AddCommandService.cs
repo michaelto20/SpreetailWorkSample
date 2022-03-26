@@ -6,15 +6,20 @@ using System.Text;
 
 namespace Spreetail.Infrastructure.Services.AddCommandService
 {
-    public class AddCommandService : IAddCommandService
+    public class AddCommandService<T,U> : IAddCommandService<T,U>
     {
-        private readonly IDictionaryService<string, HashSet<string>> _dictionaryService;
-        public AddCommandService(IDictionaryService<string, HashSet<string>> dictionaryService)
+        private readonly IDictionaryService<T, U> _dictionaryService;
+        public AddCommandService(IDictionaryService<T, U> dictionaryService)
         {
             _dictionaryService = dictionaryService;
         }
 
-        public bool ValidateCommand(string[] inputsTokens)
+        /// <summary>
+        /// Valid pattern: command, key, value
+        /// </summary>
+        /// <param name="inputsTokens"></param>
+        /// <returns></returns>
+        public bool Validate(string[] inputsTokens)
         {
             // must have command, key, and value
             if(inputsTokens == null || inputsTokens.Length != 3)
@@ -22,34 +27,67 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
                 return false;
             }
 
-            // first token must be "ADD"
-            if (!inputsTokens[0].Trim().ToLower().Equals("add", StringComparison.InvariantCulture))
-            {
-                return false;
-            }
-
-            // validate key
-            if (String.IsNullOrWhiteSpace(inputsTokens[1]))
-            {
-                return false;
-            }
-
-            // validate value
-            if (String.IsNullOrWhiteSpace(inputsTokens[2]))
-            {
-                return false;
-            }
-
-            return true;
+            return ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
         }
 
-        public bool ExecuteCommand(string[] inputsTokens)
+        private bool ValidateCommand(string command)
         {
-            string key = inputsTokens[1];
-            string value = inputsTokens[2];
+            // first token must be "ADD"
+            if (String.IsNullOrWhiteSpace(command) || !command.Trim().ToLower().Equals("add", StringComparison.InvariantCulture))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
+        private bool ValidateKey(string key)
+        {
+            // TODO: validate key's type for extensibility
+            if (String.IsNullOrWhiteSpace(key))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool ValidateValue(string value)
+        {
+            // TODO: validate value's type for extensibility
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool Execute(T key, U value)
+        {
+            if(AddToDictionary(key, value))
+            {
+                Console.WriteLine("Added");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("ERROR, member already exists for key");
+                return false;
+            }
+        }
+
+        private bool AddToDictionary(T key, U value)
+        {
             var dict = _dictionaryService.GetDict();
-            if (dict.ContainsKey(key)){
+            if (dict.ContainsKey(key))
+            {
                 if (dict[key].Contains(value))
                 {
                     // previously added this key/value pair
@@ -64,7 +102,7 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             }
             else
             {
-                HashSet<string> hs = new HashSet<string>();
+                HashSet<U> hs = new HashSet<U>();
                 hs.Add(value);
                 dict.Add(key, hs);
                 return true;

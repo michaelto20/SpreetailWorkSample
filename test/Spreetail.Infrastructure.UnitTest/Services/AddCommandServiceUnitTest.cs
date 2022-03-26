@@ -11,15 +11,15 @@ namespace Spreetail.Infrastructure.UnitTest.Services
 {
     public class AddCommandServiceUnitTest
     {
-        private readonly Mock<IDictionaryService<string, HashSet<string>>> _mockDictionaryService;
+        private readonly Mock<IDictionaryService<string, string>> _mockDictionaryService;
         public AddCommandServiceUnitTest()
         {
-            _mockDictionaryService = new Mock<IDictionaryService<string, HashSet<string>>>();
+            _mockDictionaryService = new Mock<IDictionaryService<string, string>>();
         }
 
-        private AddCommandService GetService()
+        private AddCommandService<string, string> GetService()
         {
-            return new AddCommandService(_mockDictionaryService.Object);
+            return new AddCommandService<string,string>(_mockDictionaryService.Object);
         }
 
         [Theory]
@@ -35,7 +35,7 @@ namespace Spreetail.Infrastructure.UnitTest.Services
             string[] inputs = new string[3] { command, key, value};
 
             // Act
-            bool result = sut.ValidateCommand(inputs);
+            bool result = sut.Validate(inputs);
 
             // Assert
             result.Should().Be(expectedResult);
@@ -47,18 +47,18 @@ namespace Spreetail.Infrastructure.UnitTest.Services
             // Arrange
             var sut = GetService();
             Dictionary<string, HashSet<string>> dict = new Dictionary<string, HashSet<string>>();
-            string[] inputs = new string[3] { "a", "b", "c" };
-            string[] inputs2 = new string[3] { "a", "b", "d" };
+            (string command1, string key1, string value1) = ("add", "b", "c");
+            (string command2, string key2, string value2) = ("add", "b", "d");
             _mockDictionaryService.Setup(x => x.GetDict()).Returns(dict);
 
             // Act
-            bool result = sut.ExecuteCommand(inputs);
-            bool result2 = sut.ExecuteCommand(inputs2);
+            bool result = sut.Execute(key1, value1);
+            bool result2 = sut.Execute(key2, value2);
 
             // Assert
             result.Should().BeTrue();
-            dict[inputs[1]].Should().Contain(inputs[2]);
-            dict[inputs[1]].Should().Contain(inputs2[2]);
+            dict[key1].Should().Contain(value1);
+            dict[key1].Should().Contain(value2);
         }
 
         [Fact]
@@ -67,18 +67,18 @@ namespace Spreetail.Infrastructure.UnitTest.Services
             // Arrange
             var sut = GetService();
             Dictionary<string, HashSet<string>> dict = new Dictionary<string, HashSet<string>>();
-            string[] inputs = new string[3] { "a", "b", "c" };
-            string[] inputs2 = new string[3] { "a", "b", "c" };
+            (string command1, string key1, string value1) = ("add", "b", "c");
+            (string command2, string key2, string value2) = ("add", "b", "c");
             _mockDictionaryService.Setup(x => x.GetDict()).Returns(dict);
 
             // Act
-            bool result = sut.ExecuteCommand(inputs);
-            bool result2 = sut.ExecuteCommand(inputs2);
+            bool result = sut.Execute(key1, value2);
+            bool result2 = sut.Execute(key2, value2);
 
             // Assert
             result.Should().BeTrue();
             result2.Should().BeFalse();
-            dict[inputs[1]].Should().Contain(inputs[2]);
+            dict[key1].Should().Contain(value2);
         }
     }
 }

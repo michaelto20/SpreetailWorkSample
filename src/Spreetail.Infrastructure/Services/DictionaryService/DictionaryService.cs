@@ -7,9 +7,9 @@ namespace Spreetail.Infrastructure.Services.DictionaryService
 {
     public class DictionaryService<T,U> : IDictionaryService<T,U>
     {
-        private Dictionary<T, U> Dict { get; set; } = new Dictionary<T, U>();
+        private Dictionary<T, HashSet<U>> Dict { get; set; } = new Dictionary<T, HashSet<U>>();
 
-        public Dictionary<T, U> GetDict()
+        public Dictionary<T, HashSet<U>> GetDict()
         {
             return Dict;
         }

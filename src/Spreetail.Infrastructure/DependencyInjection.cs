@@ -15,9 +15,9 @@ namespace Spreetail.Infrastructure
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IDataService, DataService>();
-            services.AddSingleton<IDictionaryService<string, HashSet<string>>, DictionaryService<string, HashSet<string>>>();
-            services.AddScoped<IAddCommandService, AddCommandService>();
+            //services.AddScoped<IDataService<string, string>, DataService>();
+            services.AddSingleton<IDictionaryService<string, string>, DictionaryService<string, string>>();
+            services.AddScoped<IAddCommandService<string, string>, AddCommandService<string, string>>();
             return services;
         }
     }

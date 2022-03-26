@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Spreetail.Infrastructure.Services.DataService
 {
-    public class DataService : IDataService
+    public class DataService //: IDataService
     {
         Dictionary<string, ICommand> CommandMapping = new Dictionary<string, ICommand>() {
             {"Add", new AddCommand() }
