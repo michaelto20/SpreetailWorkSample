@@ -1,24 +1,28 @@
 ﻿using Spreetail.Core.Services.AddCommandService;
-using Spreetail.Core.Services.DataService;
 using Spreetail.Infrastructure.Services.AddCommandService;
+using Spreetail.Core.Services.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Spreetail.Core.Services.HelpCommandService;
 
 namespace Spreetail.App
 {
     public class RunProgram
     {
         private readonly IAddCommandService<string, string> _addCommandService;
+        private readonly IHelpCommandService _helpCommandService;
+        private readonly Dictionary<string, ICommand> _commandMapping;
 
-        private readonly Dictionary<string, IDataService<string, string>> _serviceMapping;
-        
-        public RunProgram(IAddCommandService<string, string> addCommandService)
+        public RunProgram(IAddCommandService<string, string> addCommandService, 
+            IHelpCommandService helpCommandService)
         {
             _addCommandService = addCommandService;
-            _serviceMapping = new Dictionary<string, IDataService<string, string>>()
+            _helpCommandService = helpCommandService;
+            _commandMapping = new Dictionary<string, ICommand>()
             {
-                { "add", _addCommandService}
+                { "add", _addCommandService},
+                {"help", _helpCommandService }
             };
         }
 
@@ -36,11 +40,34 @@ namespace Spreetail.App
                 var inputTokens = ParserInput(userInput);
                 if (inputTokens != null)
                 {
-                    var dataService = GetCommandService(inputTokens[0]);
-                    if (dataService.Validate(inputTokens))
+                    var command = GetCommand(inputTokens[0]);
+                    if (command is IOperationCommand<string, string>)
                     {
-                        dataService.Execute(inputTokens[1], inputTokens[2]);
+                        var operationCommand = command as IOperationCommand<string, string>;
+                        if (operationCommand.Validate(inputTokens))
+                        {
+                            operationCommand.Execute(inputTokens[1], inputTokens[2]);
+                        }
+                    }else if(command is IQueryCommand)
+                    {
+                        var queryCommand = command as IQueryCommand;
+                        if (queryCommand.Validate(inputTokens))
+                        {
+                            queryCommand.Execute();
+                        }
+                    }else if(command is IActionCommand<string>)
+                    {
+                        var actionCommand = command as IActionCommand<string>;
+                        if (actionCommand.Validate(inputTokens))
+                        {
+                            actionCommand.Execute(inputTokens[1]);
+                        }
                     }
+                    else
+                    {
+                        throw new InvalidOperationException("Could not cast command");
+                    }
+                    Console.WriteLine("");
                 }
             } while (true);
             
@@ -56,16 +83,15 @@ namespace Spreetail.App
             return null;
         }
 
-        private IDataService<string, string> GetCommandService(string command)
+        private ICommand GetCommand(string command)
         {
-            if (_serviceMapping.ContainsKey(command))
+            if (_commandMapping.ContainsKey(command))
             {
-                return _serviceMapping[command];
+                return _commandMapping[command];
             }
             else
             {
-                // TODO: return help service
-                throw new NotImplementedException();
+                return _helpCommandService;
             }
         }
 

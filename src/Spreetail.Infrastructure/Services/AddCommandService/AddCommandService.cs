@@ -27,7 +27,13 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
                 return false;
             }
 
-            return ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
+            bool isValid = ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
+            if (!isValid)
+            {
+                Console.WriteLine("Invalid add command");
+            }
+
+            return isValid;
         }
 
         private bool ValidateCommand(string command)
