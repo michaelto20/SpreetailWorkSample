@@ -12,6 +12,7 @@ using Spreetail.Core.Services.RemoveCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.KeyExistsCommandService;
+using Spreetail.Core.Services.MemberExistsCommandService;
 
 namespace Spreetail.App
 {
@@ -27,6 +28,7 @@ namespace Spreetail.App
         private readonly IRemoveAllCommandService<T,U> _removeAllCommandService;
         private readonly IClearCommandService<T, U> _clearCommandService;
         private readonly IKeyExistsCommandService<T, U> _keyExistsCommandService;
+        private readonly IMemberExistsCommandService<T, U> _memberExistsCommandService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
@@ -36,7 +38,8 @@ namespace Spreetail.App
             IRemoveCommandService<T, U> removeCommandService,
             IRemoveAllCommandService<T, U> removeAllCommandService,
             IClearCommandService<T, U> clearCommandService,
-            IKeyExistsCommandService<T, U> keyExistsCommandService)
+            IKeyExistsCommandService<T, U> keyExistsCommandService, 
+            IMemberExistsCommandService<T, U> memberExistsCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -47,6 +50,7 @@ namespace Spreetail.App
             _removeAllCommandService = removeAllCommandService;
             _clearCommandService = clearCommandService;
             _keyExistsCommandService = keyExistsCommandService;
+            _memberExistsCommandService = memberExistsCommandService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
@@ -58,7 +62,8 @@ namespace Spreetail.App
                 {"remove", _removeCommandService },
                 {"removeall", _removeAllCommandService },
                 {"clear", _clearCommandService },
-                {"keyexists", _keyExistsCommandService }
+                {"keyexists", _keyExistsCommandService },
+                {"memberexists", _memberExistsCommandService }
             };
         }
 

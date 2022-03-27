@@ -6,6 +6,7 @@ using Spreetail.Core.Services.DictionaryService;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.KeyExistsCommandService;
 using Spreetail.Core.Services.KeysCommandService;
+using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
@@ -16,6 +17,7 @@ using Spreetail.Infrastructure.Services.DictionaryService;
 using Spreetail.Infrastructure.Services.HelpCommandService;
 using Spreetail.Infrastructure.Services.KeyCommandService;
 using Spreetail.Infrastructure.Services.KeyExistsCommandService;
+using Spreetail.Infrastructure.Services.MemberExistsCommandService;
 using Spreetail.Infrastructure.Services.MembersCommandService;
 using Spreetail.Infrastructure.Services.RemoveAllCommandService;
 using Spreetail.Infrastructure.Services.RemoveCommandService;
@@ -36,6 +38,7 @@ namespace Spreetail.Infrastructure
             services.AddScoped<IRemoveAllCommandService<T,U>, RemoveAllCommandService<T,U>>();
             services.AddScoped<IClearCommandService<T, U>, ClearCommandService<T, U>>();
             services.AddScoped<IKeyExistsCommandService<T, U>, KeyExistsCommandService<T, U>>();
+            services.AddScoped<IMemberExistsCommandService<T, U>, MemberExistsCommandService<T, U>>();
             return services;
         }
     }

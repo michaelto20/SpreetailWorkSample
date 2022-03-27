@@ -5,6 +5,7 @@ using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.KeyExistsCommandService;
 using Spreetail.Core.Services.KeysCommandService;
+using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
@@ -23,6 +24,7 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IRemoveAllCommandService<string, string>> _mockRemoveAllCommandService;
         private readonly Mock<IClearCommandService<string, string>> _mockClearCommandService;
         private readonly Mock<IKeyExistsCommandService<string, string>> _mockKeyExistsCommandService;
+        private readonly Mock<IMemberExistsCommandService<string, string>> _mockMemberExistsCommandService;
 
         public RunProgramUnitTest()
         {
@@ -35,6 +37,7 @@ namespace Spreetail.App.UnitTest
             _mockRemoveAllCommandService = new Mock<IRemoveAllCommandService<string, string>>();
             _mockClearCommandService = new Mock<IClearCommandService<string, string>>();
             _mockKeyExistsCommandService = new Mock<IKeyExistsCommandService<string, string>>();
+            _mockMemberExistsCommandService = new Mock<IMemberExistsCommandService<string, string>>();
         }
 
         private RunProgram<string,string> GetProgram<T,U>()
@@ -48,7 +51,8 @@ namespace Spreetail.App.UnitTest
                 _mockRemoveCommandService.Object,
                 _mockRemoveAllCommandService.Object,
                 _mockClearCommandService.Object,
-                _mockKeyExistsCommandService.Object);
+                _mockKeyExistsCommandService.Object,
+                _mockMemberExistsCommandService.Object);
         }
 
         [Fact]
