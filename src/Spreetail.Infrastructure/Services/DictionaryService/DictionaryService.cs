@@ -13,5 +13,10 @@ namespace Spreetail.Infrastructure.Services.DictionaryService
         {
             return Dict;
         }
+
+        public void Reset()
+        {
+            Dict = new Dictionary<T, HashSet<U>>();
+        }
     }
 }

@@ -9,6 +9,8 @@ using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.KeysCommandService;
 using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
+using Spreetail.Core.Services.RemoveAllCommandService;
+using Spreetail.Core.Services.ClearCommandService;
 
 namespace Spreetail.App
 {
@@ -21,13 +23,17 @@ namespace Spreetail.App
         private readonly IKeyCommandService<T, U> _keyCommandService;
         private readonly IMembersCommandService<T, U> _membersCommandService;
         private readonly IRemoveCommandService<T, U> _removeCommandService;
+        private readonly IRemoveAllCommandService<T,U> _removeAllCommandService;
+        private readonly IClearCommandService<T, U> _clearCommandService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
             IHelpCommandService helpCommandService,
             IConsoleService consoleService, IKeyCommandService<T, U> keyCommandService,
-            IMembersCommandService<T, U> membersCommandService, 
-            IRemoveCommandService<T, U> removeCommandService)
+            IMembersCommandService<T, U> membersCommandService,
+            IRemoveCommandService<T, U> removeCommandService,
+            IRemoveAllCommandService<T, U> removeAllCommandService, 
+            IClearCommandService<T, U> clearCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -35,6 +41,8 @@ namespace Spreetail.App
             _keyCommandService = keyCommandService;
             _membersCommandService = membersCommandService;
             _removeCommandService = removeCommandService;
+            _removeAllCommandService = removeAllCommandService;
+            _clearCommandService = clearCommandService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
@@ -43,7 +51,9 @@ namespace Spreetail.App
                 {"help", _helpCommandService },
                 {"keys", _keyCommandService },
                 {"members", _membersCommandService },
-                {"remove", _removeCommandService }
+                {"remove", _removeCommandService },
+                {"removeall", _removeAllCommandService },
+                {"clear", _clearCommandService }
             };
         }
 

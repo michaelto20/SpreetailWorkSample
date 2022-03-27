@@ -54,7 +54,7 @@ namespace Spreetail.Infrastructure.Services.KeyCommandService
             var keys = _dictionaryService.GetDict().Keys.ToList();
             if (keys.Count == 0)
             {
-                Console.WriteLine("empty set");
+                Console.WriteLine("(empty set)");
                 return false;
             }
             else

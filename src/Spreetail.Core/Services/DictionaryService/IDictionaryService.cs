@@ -7,5 +7,6 @@ namespace Spreetail.Core.Services.DictionaryService
     public interface IDictionaryService<T,U>
     {
         Dictionary<T, HashSet<U>> GetDict();
+        void Reset();
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Moq;
 using Spreetail.Core.Services.AddCommandService;
+using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.KeysCommandService;
 using Spreetail.Core.Services.MembersCommandService;
+using Spreetail.Core.Services.RemoveAllCommandService;
+using Spreetail.Core.Services.RemoveCommandService;
 using Xunit;
 
 namespace Spreetail.App.UnitTest
@@ -15,6 +18,9 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IConsoleService> _mockConsoleService;
         private readonly Mock<IKeyCommandService<string, string>> _mockKeyCommandService;
         private readonly Mock<IMembersCommandService<string, string>> _mockMembersCommandService;
+        private readonly Mock<IRemoveCommandService<string, string>> _mockRemoveCommandService;
+        private readonly Mock<IRemoveAllCommandService<string, string>> _mockRemoveAllCommandService;
+        private readonly Mock<IClearCommandService<string, string>> _mockClearCommandService;
 
         public RunProgramUnitTest()
         {
@@ -23,6 +29,9 @@ namespace Spreetail.App.UnitTest
             _mockConsoleService = new Mock<IConsoleService> ();
             _mockKeyCommandService = new Mock<IKeyCommandService<string, string>>();
             _mockMembersCommandService = new Mock<IMembersCommandService<string, string>>();
+            _mockRemoveCommandService = new Mock<IRemoveCommandService<string, string>>();
+            _mockRemoveAllCommandService = new Mock<IRemoveAllCommandService<string, string>>();
+            _mockClearCommandService = new Mock<IClearCommandService<string, string>>();
         }
 
         private RunProgram<string,string> GetProgram<T,U>()
@@ -32,7 +41,10 @@ namespace Spreetail.App.UnitTest
                 _mockHelpCommandService.Object, 
                 _mockConsoleService.Object,
                 _mockKeyCommandService.Object,
-                _mockMembersCommandService.Object);
+                _mockMembersCommandService.Object,
+                _mockRemoveCommandService.Object,
+                _mockRemoveAllCommandService.Object,
+                _mockClearCommandService.Object);
         }
 
         [Fact]
