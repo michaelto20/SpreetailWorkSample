@@ -49,6 +49,7 @@ namespace Spreetail.Infrastructure.Services.MembersCommandService
                 foreach(var k in dict[Key])
                 {
                     Console.WriteLine($"{count}) {k}");
+                    count++;
                 }
             }
             else
