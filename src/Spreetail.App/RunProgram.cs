@@ -1,9 +1,7 @@
 ﻿using Spreetail.Core.Services.AddCommandService;
-using Spreetail.Infrastructure.Services.AddCommandService;
 using Spreetail.Core.Services.Command;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.KeysCommandService;
@@ -13,6 +11,7 @@ using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.KeyExistsCommandService;
 using Spreetail.Core.Services.MemberExistsCommandService;
+using Spreetail.Core.Services.AllMembersCommandService;
 
 namespace Spreetail.App
 {
@@ -29,6 +28,7 @@ namespace Spreetail.App
         private readonly IClearCommandService<T, U> _clearCommandService;
         private readonly IKeyExistsCommandService<T, U> _keyExistsCommandService;
         private readonly IMemberExistsCommandService<T, U> _memberExistsCommandService;
+        private readonly IAllMembersCommandService<T, U> _allMembersCommandService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
@@ -38,8 +38,9 @@ namespace Spreetail.App
             IRemoveCommandService<T, U> removeCommandService,
             IRemoveAllCommandService<T, U> removeAllCommandService,
             IClearCommandService<T, U> clearCommandService,
-            IKeyExistsCommandService<T, U> keyExistsCommandService, 
-            IMemberExistsCommandService<T, U> memberExistsCommandService)
+            IKeyExistsCommandService<T, U> keyExistsCommandService,
+            IMemberExistsCommandService<T, U> memberExistsCommandService, 
+            IAllMembersCommandService<T, U> allMembersCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -51,6 +52,7 @@ namespace Spreetail.App
             _clearCommandService = clearCommandService;
             _keyExistsCommandService = keyExistsCommandService;
             _memberExistsCommandService = memberExistsCommandService;
+            _allMembersCommandService = allMembersCommandService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
@@ -63,7 +65,8 @@ namespace Spreetail.App
                 {"removeall", _removeAllCommandService },
                 {"clear", _clearCommandService },
                 {"keyexists", _keyExistsCommandService },
-                {"memberexists", _memberExistsCommandService }
+                {"memberexists", _memberExistsCommandService },
+                {"allmembers", _allMembersCommandService }
             };
         }
 

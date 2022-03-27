@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Spreetail.Core.Services.AddCommandService;
+using Spreetail.Core.Services.AllMembersCommandService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
@@ -25,6 +26,7 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IClearCommandService<string, string>> _mockClearCommandService;
         private readonly Mock<IKeyExistsCommandService<string, string>> _mockKeyExistsCommandService;
         private readonly Mock<IMemberExistsCommandService<string, string>> _mockMemberExistsCommandService;
+        private readonly Mock<IAllMembersCommandService<string, string>> _mockAllMembersCommandService;
 
         public RunProgramUnitTest()
         {
@@ -38,6 +40,7 @@ namespace Spreetail.App.UnitTest
             _mockClearCommandService = new Mock<IClearCommandService<string, string>>();
             _mockKeyExistsCommandService = new Mock<IKeyExistsCommandService<string, string>>();
             _mockMemberExistsCommandService = new Mock<IMemberExistsCommandService<string, string>>();
+            _mockAllMembersCommandService = new Mock<IAllMembersCommandService<string, string>>();
         }
 
         private RunProgram<string,string> GetProgram<T,U>()
@@ -52,7 +55,8 @@ namespace Spreetail.App.UnitTest
                 _mockRemoveAllCommandService.Object,
                 _mockClearCommandService.Object,
                 _mockKeyExistsCommandService.Object,
-                _mockMemberExistsCommandService.Object);
+                _mockMemberExistsCommandService.Object,
+                _mockAllMembersCommandService.Object);
         }
 
         [Fact]

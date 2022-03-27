@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Spreetail.Core.Services.AddCommandService;
+using Spreetail.Core.Services.AllMembersCommandService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.DictionaryService;
@@ -12,6 +13,7 @@ using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
 using Spreetail.Infrastructure.Domain.ConsoleIO;
 using Spreetail.Infrastructure.Services.AddCommandService;
+using Spreetail.Infrastructure.Services.AllMembersCommandService;
 using Spreetail.Infrastructure.Services.ClearCommandService;
 using Spreetail.Infrastructure.Services.DictionaryService;
 using Spreetail.Infrastructure.Services.HelpCommandService;
@@ -39,6 +41,7 @@ namespace Spreetail.Infrastructure
             services.AddScoped<IClearCommandService<T, U>, ClearCommandService<T, U>>();
             services.AddScoped<IKeyExistsCommandService<T, U>, KeyExistsCommandService<T, U>>();
             services.AddScoped<IMemberExistsCommandService<T, U>, MemberExistsCommandService<T, U>>();
+            services.AddScoped<IAllMembersCommandService<T, U>, AllMembersCommandService<T, U>>();
             return services;
         }
     }
