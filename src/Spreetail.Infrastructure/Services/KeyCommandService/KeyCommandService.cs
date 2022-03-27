@@ -54,15 +54,14 @@ namespace Spreetail.Infrastructure.Services.KeyCommandService
             var keys = _dictionaryService.GetDict().Keys.ToList();
             if (keys.Count == 0)
             {
-                // TODO: Return error?
-                Console.WriteLine("No keys");
+                Console.WriteLine("empty set");
                 return false;
             }
             else
             {
                 for (int i = 0; i < keys.Count; i++)
                 {
-                    Console.WriteLine($"{i}) {keys[i]}");
+                    Console.WriteLine($"{i+1}) {keys[i]}");
                 }
                 return true;
             }

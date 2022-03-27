@@ -17,7 +17,7 @@ namespace Spreetail.App
             var serviceProvider = services.BuildServiceProvider();
 
             // Start app
-            serviceProvider.GetService<RunProgram>().Run();
+            serviceProvider.GetService<RunProgram<string, string>>().Run();
         }
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace Spreetail.App
         private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddServices();
-            services.AddTransient<RunProgram>();
+            services.AddServices<string, string>();
+            services.AddTransient<RunProgram<string,string>>();
             return services;
         }
     }

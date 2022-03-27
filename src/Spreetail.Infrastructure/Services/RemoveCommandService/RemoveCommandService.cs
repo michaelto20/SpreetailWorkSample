@@ -1,0 +1,67 @@
+﻿using Spreetail.Core.Services.DictionaryService;
+using Spreetail.Core.Services.RemoveCommandService;
+using System;
+using H = Spreetail.Infrastructure.Helpers;
+
+namespace Spreetail.Infrastructure.Services.RemoveCommandService
+{
+    public class RemoveCommandService<T,U> : IRemoveCommandService<T,U>
+    {
+        private readonly IDictionaryService<T, U> _dictionaryService;
+        public T Key { get; set; }
+        public U Value { get; set; }
+        public RemoveCommandService(IDictionaryService<T, U> dictionaryService)
+        {
+            _dictionaryService = dictionaryService;
+        }
+
+        public bool Validate(string[] inputTokens)
+        {
+            bool isValid = true;
+            if (inputTokens == null || inputTokens.Length != 3)
+            {
+                isValid = false;
+            }
+            else
+            {
+                isValid = H.Helpers.ValidateCommand(inputTokens[0], "remove") && H.Helpers.ValidateKey(inputTokens[1]);
+            }
+            if (isValid)
+            {
+                // make types generic for dictionary
+                Key = (T)Convert.ChangeType(inputTokens[1], typeof(T));
+                Value = (U)Convert.ChangeType(inputTokens[2], typeof(U));
+            }
+            else
+            {
+                Console.WriteLine("Invalid REMOVE command");
+            }
+
+            return isValid;
+        }
+
+        public bool Execute()
+        {
+            bool isValid = true;
+            var dict = _dictionaryService.GetDict();
+            if (dict.ContainsKey(Key) && dict[Key].Contains(Value))
+            {
+                // remove value
+                dict[Key].Remove(Value);
+
+                // if no more values for key, remove key
+                if(dict[Key].Count == 0)
+                {
+                    dict.Remove(Key);
+                }
+                Console.WriteLine("Removed");
+            }
+            else
+            {
+                isValid = false;
+                Console.WriteLine("ERROR, key does not exist");
+            }
+            return isValid;
+        }
+    }
+}

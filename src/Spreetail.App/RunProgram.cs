@@ -7,33 +7,43 @@ using System.Text;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.KeysCommandService;
+using Spreetail.Core.Services.MembersCommandService;
+using Spreetail.Core.Services.RemoveCommandService;
 
 namespace Spreetail.App
 {
-    public class RunProgram
+    public class RunProgram<T,U>
     {
-        private readonly IAddCommandService<string, string> _addCommandService;
+        private readonly IAddCommandService<T, U> _addCommandService;
         private readonly IHelpCommandService _helpCommandService;
         private readonly Dictionary<string, ICommand> _commandMapping;
         private readonly IConsoleService _consoleService;
-        private readonly IKeyCommandService<string, string> _keyCommandService;
-        
+        private readonly IKeyCommandService<T, U> _keyCommandService;
+        private readonly IMembersCommandService<T, U> _membersCommandService;
+        private readonly IRemoveCommandService<T, U> _removeCommandService;
+
         public RunProgram(
-            IAddCommandService<string, string> addCommandService,
+            IAddCommandService<T, U> addCommandService,
             IHelpCommandService helpCommandService,
-            IConsoleService consoleService, IKeyCommandService<string, string> keyCommandService)
+            IConsoleService consoleService, IKeyCommandService<T, U> keyCommandService,
+            IMembersCommandService<T, U> membersCommandService, 
+            IRemoveCommandService<T, U> removeCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
             _consoleService = consoleService;
             _keyCommandService = keyCommandService;
+            _membersCommandService = membersCommandService;
+            _removeCommandService = removeCommandService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
             {
                 { "add", _addCommandService},
                 {"help", _helpCommandService },
-                {"keys", _keyCommandService }
+                {"keys", _keyCommandService },
+                {"members", _membersCommandService },
+                {"remove", _removeCommandService }
             };
         }
 

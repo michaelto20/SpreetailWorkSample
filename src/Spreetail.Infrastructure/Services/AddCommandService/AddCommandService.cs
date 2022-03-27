@@ -43,7 +43,7 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             {
                 // make types generic for dictionary
                 Key = (T)Convert.ChangeType(inputsTokens[1], typeof(T));
-                Value = (U)Convert.ChangeType(inputsTokens[1], typeof(U));
+                Value = (U)Convert.ChangeType(inputsTokens[2], typeof(U));
             }
 
             return isValid;

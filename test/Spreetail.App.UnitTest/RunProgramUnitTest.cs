@@ -3,6 +3,7 @@ using Spreetail.Core.Services.AddCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.KeysCommandService;
+using Spreetail.Core.Services.MembersCommandService;
 using Xunit;
 
 namespace Spreetail.App.UnitTest
@@ -13,6 +14,7 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IHelpCommandService> _mockHelpCommandService;
         private readonly Mock<IConsoleService> _mockConsoleService;
         private readonly Mock<IKeyCommandService<string, string>> _mockKeyCommandService;
+        private readonly Mock<IMembersCommandService<string, string>> _mockMembersCommandService;
 
         public RunProgramUnitTest()
         {
@@ -20,15 +22,17 @@ namespace Spreetail.App.UnitTest
             _mockHelpCommandService = new Mock<IHelpCommandService>();
             _mockConsoleService = new Mock<IConsoleService> ();
             _mockKeyCommandService = new Mock<IKeyCommandService<string, string>>();
+            _mockMembersCommandService = new Mock<IMembersCommandService<string, string>>();
         }
 
-        private RunProgram GetProgram()
+        private RunProgram<string,string> GetProgram<T,U>()
         {
-            return new RunProgram(
+            return new RunProgram<string,string>(
                 _mockAddCommandService.Object, 
                 _mockHelpCommandService.Object, 
                 _mockConsoleService.Object,
-                _mockKeyCommandService.Object);
+                _mockKeyCommandService.Object,
+                _mockMembersCommandService.Object);
         }
 
         [Fact]
@@ -37,7 +41,7 @@ namespace Spreetail.App.UnitTest
             // Arrange
             _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("help").Returns("exit");
             _mockHelpCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
-            var program = GetProgram();
+            var program = GetProgram<string,string>();
 
             // Act
             program.Run();
@@ -52,7 +56,7 @@ namespace Spreetail.App.UnitTest
             // Arrange
             _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("add a b").Returns("exit");
             _mockAddCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
-            var program = GetProgram();
+            var program = GetProgram<string, string>();
 
             // Act
             program.Run();
@@ -67,7 +71,7 @@ namespace Spreetail.App.UnitTest
             // Arrange
             _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("KEYS").Returns("exit");
             _mockKeyCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
-            var program = GetProgram();
+            var program = GetProgram<string, string>();
 
             // Act
             program.Run();
@@ -81,7 +85,7 @@ namespace Spreetail.App.UnitTest
         {
             // Arrange
             _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("exit");
-            var program = GetProgram();
+            var program = GetProgram<string, string>();
 
             // Act
             program.Run();
