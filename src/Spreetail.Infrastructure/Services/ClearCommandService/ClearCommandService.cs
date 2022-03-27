@@ -1,8 +1,6 @@
 ﻿using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.DictionaryService;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Spreetail.Infrastructure.Services.ClearCommandService
 {

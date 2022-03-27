@@ -25,5 +25,17 @@ namespace Spreetail.Infrastructure.Helpers
 
             return true;
         }
+
+        /// <summary>
+        /// Make types generic for dictionary
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="convertMe"></param>
+        /// <returns></returns>
+        public static T ConvertToGeneric<T>(string convertMe)
+        {
+            
+            return (T)Convert.ChangeType(convertMe, typeof(T));
+        }
     }
 }

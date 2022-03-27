@@ -29,8 +29,8 @@ namespace Spreetail.Infrastructure.Services.RemoveCommandService
             if (isValid)
             {
                 // make types generic for dictionary
-                Key = (T)Convert.ChangeType(inputTokens[1], typeof(T));
-                Value = (U)Convert.ChangeType(inputTokens[2], typeof(U));
+                Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
+                Value = Helpers.Helpers.ConvertToGeneric<U>(inputTokens[2]);
             }
             else
             {

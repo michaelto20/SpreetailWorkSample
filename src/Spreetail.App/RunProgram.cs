@@ -11,6 +11,7 @@ using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.ClearCommandService;
+using Spreetail.Core.Services.KeyExistsCommandService;
 
 namespace Spreetail.App
 {
@@ -25,6 +26,7 @@ namespace Spreetail.App
         private readonly IRemoveCommandService<T, U> _removeCommandService;
         private readonly IRemoveAllCommandService<T,U> _removeAllCommandService;
         private readonly IClearCommandService<T, U> _clearCommandService;
+        private readonly IKeyExistsCommandService<T, U> _keyExistsCommandService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
@@ -32,8 +34,9 @@ namespace Spreetail.App
             IConsoleService consoleService, IKeyCommandService<T, U> keyCommandService,
             IMembersCommandService<T, U> membersCommandService,
             IRemoveCommandService<T, U> removeCommandService,
-            IRemoveAllCommandService<T, U> removeAllCommandService, 
-            IClearCommandService<T, U> clearCommandService)
+            IRemoveAllCommandService<T, U> removeAllCommandService,
+            IClearCommandService<T, U> clearCommandService,
+            IKeyExistsCommandService<T, U> keyExistsCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -43,6 +46,7 @@ namespace Spreetail.App
             _removeCommandService = removeCommandService;
             _removeAllCommandService = removeAllCommandService;
             _clearCommandService = clearCommandService;
+            _keyExistsCommandService = keyExistsCommandService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
@@ -53,7 +57,8 @@ namespace Spreetail.App
                 {"members", _membersCommandService },
                 {"remove", _removeCommandService },
                 {"removeall", _removeAllCommandService },
-                {"clear", _clearCommandService }
+                {"clear", _clearCommandService },
+                {"keyexists", _keyExistsCommandService }
             };
         }
 
