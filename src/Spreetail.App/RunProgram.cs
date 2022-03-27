@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Spreetail.Core.Services.HelpCommandService;
 using Spreetail.Core.Services.ConsoleService;
+using Spreetail.Core.Services.KeysCommandService;
 
 namespace Spreetail.App
 {
@@ -15,21 +16,24 @@ namespace Spreetail.App
         private readonly IHelpCommandService _helpCommandService;
         private readonly Dictionary<string, ICommand> _commandMapping;
         private readonly IConsoleService _consoleService;
-
+        private readonly IKeyCommandService<string, string> _keyCommandService;
+        
         public RunProgram(
             IAddCommandService<string, string> addCommandService,
-            IHelpCommandService helpCommandService, 
-            IConsoleService consoleService)
+            IHelpCommandService helpCommandService,
+            IConsoleService consoleService, IKeyCommandService<string, string> keyCommandService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
             _consoleService = consoleService;
-            
-            
+            _keyCommandService = keyCommandService;
+
+
             _commandMapping = new Dictionary<string, ICommand>()
             {
                 { "add", _addCommandService},
-                {"help", _helpCommandService }
+                {"help", _helpCommandService },
+                {"keys", _keyCommandService }
             };
         }
 
@@ -47,27 +51,13 @@ namespace Spreetail.App
                 var inputTokens = ParserInput(userInput);
                 if (inputTokens != null)
                 {
-                    var command = GetCommand(inputTokens[0]);
-                    if (command is IOperationCommand<string, string>)
+                    var command = GetCommand(inputTokens[0].Trim().ToLower());
+                    if(command is ICommand)
                     {
-                        var operationCommand = command as IOperationCommand<string, string>;
-                        if (operationCommand.Validate(inputTokens))
-                        {
-                            operationCommand.Execute(inputTokens[1], inputTokens[2]);
-                        }
-                    }else if(command is IQueryCommand)
-                    {
-                        var queryCommand = command as IQueryCommand;
+                        var queryCommand = command as ICommand;
                         if (queryCommand.Validate(inputTokens))
                         {
                             queryCommand.Execute();
-                        }
-                    }else if(command is IActionCommand<string>)
-                    {
-                        var actionCommand = command as IActionCommand<string>;
-                        if (actionCommand.Validate(inputTokens))
-                        {
-                            actionCommand.Execute(inputTokens[1]);
                         }
                     }
                     else

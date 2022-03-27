@@ -9,6 +9,8 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
     public class AddCommandService<T,U> : IAddCommandService<T,U>
     {
         private readonly IDictionaryService<T, U> _dictionaryService;
+        public T Key { get; set; }
+        public U Value { get; set; }
         public AddCommandService(IDictionaryService<T, U> dictionaryService)
         {
             _dictionaryService = dictionaryService;
@@ -21,16 +23,27 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
         /// <returns></returns>
         public bool Validate(string[] inputsTokens)
         {
+            bool isValid = true;
+
             // must have command, key, and value
             if(inputsTokens == null || inputsTokens.Length != 3)
             {
-                return false;
+                isValid = false;
+            }
+            else
+            {
+                isValid = ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
             }
 
-            bool isValid = ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
             if (!isValid)
             {
                 Console.WriteLine("Invalid add command");
+            }
+            else
+            {
+                // make types generic for dictionary
+                Key = (T)Convert.ChangeType(inputsTokens[1], typeof(T));
+                Value = (U)Convert.ChangeType(inputsTokens[1], typeof(U));
             }
 
             return isValid;
@@ -75,9 +88,9 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             }
         }
 
-        public bool Execute(T key, U value)
+        public bool Execute()
         {
-            if(AddToDictionary(key, value))
+            if(AddToDictionary(Key, Value))
             {
                 Console.WriteLine("Added");
                 return true;

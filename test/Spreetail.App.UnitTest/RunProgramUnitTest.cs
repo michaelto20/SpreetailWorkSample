@@ -2,9 +2,7 @@
 using Spreetail.Core.Services.AddCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Spreetail.Core.Services.KeysCommandService;
 using Xunit;
 
 namespace Spreetail.App.UnitTest
@@ -14,17 +12,23 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IAddCommandService<string, string>> _mockAddCommandService;
         private readonly Mock<IHelpCommandService> _mockHelpCommandService;
         private readonly Mock<IConsoleService> _mockConsoleService;
+        private readonly Mock<IKeyCommandService<string, string>> _mockKeyCommandService;
 
         public RunProgramUnitTest()
         {
             _mockAddCommandService = new Mock<IAddCommandService<string, string>>();
             _mockHelpCommandService = new Mock<IHelpCommandService>();
             _mockConsoleService = new Mock<IConsoleService> ();
+            _mockKeyCommandService = new Mock<IKeyCommandService<string, string>>();
         }
 
         private RunProgram GetProgram()
         {
-            return new RunProgram(_mockAddCommandService.Object, _mockHelpCommandService.Object, _mockConsoleService.Object);
+            return new RunProgram(
+                _mockAddCommandService.Object, 
+                _mockHelpCommandService.Object, 
+                _mockConsoleService.Object,
+                _mockKeyCommandService.Object);
         }
 
         [Fact]
@@ -54,7 +58,22 @@ namespace Spreetail.App.UnitTest
             program.Run();
 
             // Assert
-            _mockAddCommandService.Verify(x => x.Execute(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _mockAddCommandService.Verify(x => x.Execute(), Times.Once);
+        }
+
+        [Fact]
+        public void RunProgram_Run_CallsKeysCommand_Execute()
+        {
+            // Arrange
+            _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("KEYS").Returns("exit");
+            _mockKeyCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
+            var program = GetProgram();
+
+            // Act
+            program.Run();
+
+            // Assert
+            _mockKeyCommandService.Verify(x => x.Execute(), Times.Once);
         }
 
         [Fact]
@@ -68,7 +87,7 @@ namespace Spreetail.App.UnitTest
             program.Run();
 
             // Assert
-            _mockAddCommandService.Verify(x => x.Execute(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            _mockAddCommandService.Verify(x => x.Execute(), Times.Never);
             _mockHelpCommandService.Verify(x => x.Execute(), Times.Never);
         }
     }

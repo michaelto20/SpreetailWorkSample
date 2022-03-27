@@ -2,7 +2,7 @@
 
 namespace Spreetail.Core.Services.AddCommandService
 {
-    public interface IAddCommandService<T, U> : IOperationCommand<T,U>
+    public interface IAddCommandService<T, U> : ICommand
     {
     }
 }

@@ -24,6 +24,8 @@ namespace Spreetail.Infrastructure.UnitTest.Services
 
         [Theory]
         [InlineData("Add", "a", "b", true)]
+        [InlineData("Add", "2", "b", true)]
+        [InlineData("Add", "a", "2", true)]
         [InlineData("Addd", "a", "b", false)]
         [InlineData("Add", "", "b", false)]
         [InlineData("Add", "", "", false)]
@@ -47,18 +49,21 @@ namespace Spreetail.Infrastructure.UnitTest.Services
             // Arrange
             var sut = GetService();
             Dictionary<string, HashSet<string>> dict = new Dictionary<string, HashSet<string>>();
-            (string command1, string key1, string value1) = ("add", "b", "c");
-            (string command2, string key2, string value2) = ("add", "b", "d");
+            string value1 = "c";
+            string value2 = "d";
+            sut.Key = "b";
+            sut.Value = value1;
             _mockDictionaryService.Setup(x => x.GetDict()).Returns(dict);
 
             // Act
-            bool result = sut.Execute(key1, value1);
-            bool result2 = sut.Execute(key2, value2);
+            bool result = sut.Execute();
+            sut.Value = value2;
+            bool result2 = sut.Execute();
 
             // Assert
             result.Should().BeTrue();
-            dict[key1].Should().Contain(value1);
-            dict[key1].Should().Contain(value2);
+            dict[sut.Key].Should().Contain(value1);
+            dict[sut.Key].Should().Contain(value2);
         }
 
         [Fact]
@@ -67,18 +72,18 @@ namespace Spreetail.Infrastructure.UnitTest.Services
             // Arrange
             var sut = GetService();
             Dictionary<string, HashSet<string>> dict = new Dictionary<string, HashSet<string>>();
-            (string command1, string key1, string value1) = ("add", "b", "c");
-            (string command2, string key2, string value2) = ("add", "b", "c");
+            sut.Key = "b";
+            sut.Value = "c";
             _mockDictionaryService.Setup(x => x.GetDict()).Returns(dict);
 
             // Act
-            bool result = sut.Execute(key1, value2);
-            bool result2 = sut.Execute(key2, value2);
+            bool result = sut.Execute();
+            bool result2 = sut.Execute();
 
             // Assert
             result.Should().BeTrue();
             result2.Should().BeFalse();
-            dict[key1].Should().Contain(value2);
+            dict[sut.Key].Should().Contain(sut.Value);
         }
     }
 }
