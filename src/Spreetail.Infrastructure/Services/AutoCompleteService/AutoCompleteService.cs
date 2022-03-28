@@ -64,7 +64,18 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
                 }
             }
             Console.WriteLine();
-            return UserInput.ToString();
+            string result =  UserInput.ToString();
+            ResetService();
+            return result;
+        }
+
+        private void ResetService()
+        {
+            InputChanged = true;
+            CandidateCount = 0;
+            CandidateWords = new List<string>();
+            UserInput = new StringBuilder();
+            Tokens = null;
         }
 
         private void HandleBackspace()
@@ -84,6 +95,7 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
                 // get most recent word for search
                 Tokens = UserInput.ToString().Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 CandidateWords = _trieService.GetWordsWithMathingPrefix(Tokens[Tokens.Length - 1]).ToList();
+                CandidateWords.Sort();
                 CandidateCount = 0;
             }
 
