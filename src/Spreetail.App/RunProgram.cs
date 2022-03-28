@@ -13,6 +13,7 @@ using Spreetail.Core.Services.KeyExistsCommandService;
 using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.AllMembersCommandService;
 using Spreetail.Core.Services.ItemsCommandService;
+using Spreetail.Core.Trie;
 
 namespace Spreetail.App
 {
@@ -31,6 +32,7 @@ namespace Spreetail.App
         private readonly IMemberExistsCommandService<T, U> _memberExistsCommandService;
         private readonly IAllMembersCommandService<T, U> _allMembersCommandService;
         private readonly IItemsCommandService<T, U> _itemsCommandService;
+        private readonly ITrieService _trieService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
@@ -42,8 +44,9 @@ namespace Spreetail.App
             IClearCommandService<T, U> clearCommandService,
             IKeyExistsCommandService<T, U> keyExistsCommandService,
             IMemberExistsCommandService<T, U> memberExistsCommandService,
-            IAllMembersCommandService<T, U> allMembersCommandService, 
-            IItemsCommandService<T, U> itemsCommandService)
+            IAllMembersCommandService<T, U> allMembersCommandService,
+            IItemsCommandService<T, U> itemsCommandService, 
+            ITrieService trieService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -57,11 +60,12 @@ namespace Spreetail.App
             _memberExistsCommandService = memberExistsCommandService;
             _allMembersCommandService = allMembersCommandService;
             _itemsCommandService = itemsCommandService;
+            _trieService = trieService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
             {
-                { "add", _addCommandService},
+                {"add", _addCommandService},
                 {"help", _helpCommandService },
                 {"keys", _keyCommandService },
                 {"members", _membersCommandService },
@@ -73,6 +77,8 @@ namespace Spreetail.App
                 {"allmembers", _allMembersCommandService },
                 {"items", _itemsCommandService }
             };
+
+            InitializeTrie();
         }
 
         public void Run() 
@@ -107,6 +113,14 @@ namespace Spreetail.App
             } while (true);
 
             _consoleService.WriteLine("Goodbye");
+        }
+
+        private void InitializeTrie()
+        {
+            foreach((string key, ICommand command)in _commandMapping)
+            {
+                _trieService.Insert(key);
+            }
         }
 
         private string[] ParserInput(string userInput)

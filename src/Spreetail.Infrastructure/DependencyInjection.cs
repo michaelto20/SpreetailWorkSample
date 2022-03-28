@@ -12,6 +12,7 @@ using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
+using Spreetail.Core.Trie;
 using Spreetail.Infrastructure.Domain.ConsoleIO;
 using Spreetail.Infrastructure.Services.AddCommandService;
 using Spreetail.Infrastructure.Services.AllMembersCommandService;
@@ -25,6 +26,7 @@ using Spreetail.Infrastructure.Services.MemberExistsCommandService;
 using Spreetail.Infrastructure.Services.MembersCommandService;
 using Spreetail.Infrastructure.Services.RemoveAllCommandService;
 using Spreetail.Infrastructure.Services.RemoveCommandService;
+using Spreetail.Infrastructure.Services.TrieService;
 
 namespace Spreetail.Infrastructure
 {
@@ -45,6 +47,7 @@ namespace Spreetail.Infrastructure
             services.AddScoped<IMemberExistsCommandService<T, U>, MemberExistsCommandService<T, U>>();
             services.AddScoped<IAllMembersCommandService<T, U>, AllMembersCommandService<T, U>>();
             services.AddScoped<IItemsCommandService<T, U>, ItemsCommandService<T, U>>();
+            services.AddScoped<ITrieService, TrieService>();
             return services;
         }
     }
