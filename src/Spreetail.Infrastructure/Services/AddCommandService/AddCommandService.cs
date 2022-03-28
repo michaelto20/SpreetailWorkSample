@@ -1,5 +1,7 @@
 ﻿using Spreetail.Core.Services.AddCommandService;
+using Spreetail.Core.Services.AutoCompleteService;
 using Spreetail.Core.Services.DictionaryService;
+using Spreetail.Core.Trie;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +11,14 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
     public class AddCommandService<T,U> : IAddCommandService<T,U>
     {
         private readonly IDictionaryService<T, U> _dictionaryService;
+        private readonly ITrieService _trieService;
         public T Key { get; set; }
         public U Value { get; set; }
-        public AddCommandService(IDictionaryService<T, U> dictionaryService)
+        public AddCommandService(IDictionaryService<T, U> dictionaryService,
+            ITrieService trieService)
         {
             _dictionaryService = dictionaryService;
+            _trieService = trieService;
         }
 
         /// <summary>
@@ -41,6 +46,9 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             }
             else
             {
+                // add for autocomplete
+                _trieService.Insert(inputsTokens[1]);
+                _trieService.Insert(inputsTokens[2]);
                 // make types generic for dictionary
                 Key = (T)Convert.ChangeType(inputsTokens[1], typeof(T));
                 Value = (U)Convert.ChangeType(inputsTokens[2], typeof(U));

@@ -10,16 +10,19 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
     public class AutoCompleteService : IAutoCompleteService
     {
         private readonly ITrieService _trieService;
+        private bool InputChanged { get; set; }
+        private StringBuilder UserInput = new StringBuilder();
+        private int CandidateCount = 0;
+        private string[] Tokens = null;
+        private List<string> CandidateWords = new List<string>();
+
+
         public AutoCompleteService(ITrieService trieService)
         {
             _trieService = trieService;
         }
         public string HandleUserInput()
         {
-            bool inputChanged = true;
-            List<string> candidateWords = new List<string>();
-            int candidateCount = 0;
-            StringBuilder sb = new StringBuilder();
             List<ConsoleKey> keysToIgnore = new List<ConsoleKey>()
             {
                 ConsoleKey.Escape,
@@ -33,57 +36,77 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
             // if key is enter, return user input
             while (keyInfo.Key != ConsoleKey.Enter)
             {
-                // autocomplete
+                // autocomplete triggered
                 if (keyInfo.Key == ConsoleKey.Tab)
                 {
-                    // only re-query Trie is user has entered a new character
-                    if (inputChanged)
-                    {
-                        inputChanged = false;
-                        candidateWords = _trieService.GetWordsWithMathingPrefix(sb.ToString()).ToList();
-                        candidateCount = 0;
-                    }
-
-                    if (candidateWords != null && candidateWords.Any())
-                    {
-                        if (candidateCount >= candidateWords.Count)
-                        {
-                            // reset autocomplete loop
-                            candidateCount = 0;
-                        }
-
-                        ClearCurrentConsoleLine();
-                        // display candidate match
-                        Console.Write(candidateWords[candidateCount]);
-                        sb.Clear();
-                        sb.Append(candidateWords[candidateCount]);
-                        candidateCount++;
-                    }
+                    HandleTab();
                     keyInfo = Console.ReadKey(true);
                 }
                 else
                 {
                     // handle backspace
-                    if (keyInfo.Key == ConsoleKey.Backspace && sb.Length > 0)
+                    if (keyInfo.Key == ConsoleKey.Backspace && UserInput.Length > 0)
                     {
-                        // remove last character
-                        sb.Remove(sb.Length - 1, 1);
-                        ClearCurrentConsoleLine();
-                        Console.Write(sb.ToString());
+                        HandleBackspace();
                     }
                     else
                     {
-                        // TODO: Add validation, many keys we don't want to act on
-                        sb.Append(keyInfo.KeyChar);
-                        Console.Write(keyInfo.KeyChar);
+                        // Limit keys to letters, numbers and special characters
+                        if ((int)keyInfo.KeyChar > 31 && (int)keyInfo.KeyChar < 177)
+                        {
+                            UserInput.Append(keyInfo.KeyChar);
+                            Console.Write(keyInfo.KeyChar);
+                        }
                     }
-                    
-                    inputChanged = true;
+
+                    InputChanged = true;
                     keyInfo = Console.ReadKey(true);
                 }
             }
             Console.WriteLine();
-            return sb.ToString();
+            return UserInput.ToString();
+        }
+
+        private void HandleBackspace()
+        {
+            // remove last character
+            UserInput.Remove(UserInput.Length - 1, 1);
+            ClearCurrentConsoleLine();
+            Console.Write(UserInput.ToString());
+        }
+
+        private void HandleTab()
+        {
+            // only re-query Trie is user has entered a new character
+            if (InputChanged)
+            {
+                InputChanged = false;
+                // get most recent word for search
+                Tokens = UserInput.ToString().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                CandidateWords = _trieService.GetWordsWithMathingPrefix(Tokens[Tokens.Length - 1]).ToList();
+                CandidateCount = 0;
+            }
+
+            if (CandidateWords != null && CandidateWords.Any())
+            {
+                Tokens = UserInput.ToString().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                if (CandidateCount >= CandidateWords.Count)
+                {
+                    // reset autocomplete loop
+                    CandidateCount = 0;
+                }
+
+                ClearCurrentConsoleLine();
+                
+                // update user input with prefix match
+                UserInput.Remove(UserInput.Length - Tokens[Tokens.Length - 1].Length, Tokens[Tokens.Length - 1].Length);
+                UserInput.Append(CandidateWords[CandidateCount]);
+                
+                // display candidate match
+                Console.Write(UserInput.ToString());
+                CandidateCount++;
+            }
         }
 
         /// <summary>

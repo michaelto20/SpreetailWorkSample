@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using Spreetail.Core.Services.DictionaryService;
+using Spreetail.Core.Trie;
 using Spreetail.Infrastructure.Services.AddCommandService;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,16 @@ namespace Spreetail.Infrastructure.UnitTest.Services
     public class AddCommandServiceUnitTest
     {
         private readonly Mock<IDictionaryService<string, string>> _mockDictionaryService;
+        private readonly Mock<ITrieService> _mockTrieService;
         public AddCommandServiceUnitTest()
         {
             _mockDictionaryService = new Mock<IDictionaryService<string, string>>();
+            _mockTrieService = new Mock<ITrieService>();
         }
 
         private AddCommandService<string, string> GetService()
         {
-            return new AddCommandService<string,string>(_mockDictionaryService.Object);
+            return new AddCommandService<string,string>(_mockDictionaryService.Object, _mockTrieService.Object);
         }
 
         [Theory]
