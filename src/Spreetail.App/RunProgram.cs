@@ -14,6 +14,7 @@ using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.AllMembersCommandService;
 using Spreetail.Core.Services.ItemsCommandService;
 using Spreetail.Core.Trie;
+using Spreetail.Core.Services.AutoCompleteService;
 
 namespace Spreetail.App
 {
@@ -33,6 +34,7 @@ namespace Spreetail.App
         private readonly IAllMembersCommandService<T, U> _allMembersCommandService;
         private readonly IItemsCommandService<T, U> _itemsCommandService;
         private readonly ITrieService _trieService;
+        private readonly IAutoCompleteService _autoCompleteService;
 
         public RunProgram(
             IAddCommandService<T, U> addCommandService,
@@ -45,8 +47,9 @@ namespace Spreetail.App
             IKeyExistsCommandService<T, U> keyExistsCommandService,
             IMemberExistsCommandService<T, U> memberExistsCommandService,
             IAllMembersCommandService<T, U> allMembersCommandService,
-            IItemsCommandService<T, U> itemsCommandService, 
-            ITrieService trieService)
+            IItemsCommandService<T, U> itemsCommandService,
+            ITrieService trieService, 
+            IAutoCompleteService autoCompleteService)
         {
             _addCommandService = addCommandService;
             _helpCommandService = helpCommandService;
@@ -61,6 +64,7 @@ namespace Spreetail.App
             _allMembersCommandService = allMembersCommandService;
             _itemsCommandService = itemsCommandService;
             _trieService = trieService;
+            _autoCompleteService = autoCompleteService;
 
 
             _commandMapping = new Dictionary<string, ICommand>()
@@ -87,7 +91,7 @@ namespace Spreetail.App
             do
             {
                 _consoleService.WriteLine("Please enter a command?");
-                userInput = _consoleService.ReadLine();
+                userInput = _autoCompleteService.HandleUserInput();
                 if (ShouldExit(userInput)) 
                 {
                     break;

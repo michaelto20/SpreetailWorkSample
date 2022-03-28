@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Spreetail.Core.Services.AddCommandService;
 using Spreetail.Core.Services.AllMembersCommandService;
+using Spreetail.Core.Services.AutoCompleteService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.HelpCommandService;
@@ -11,6 +12,7 @@ using Spreetail.Core.Services.MemberExistsCommandService;
 using Spreetail.Core.Services.MembersCommandService;
 using Spreetail.Core.Services.RemoveAllCommandService;
 using Spreetail.Core.Services.RemoveCommandService;
+using Spreetail.Core.Trie;
 using Xunit;
 
 namespace Spreetail.App.UnitTest
@@ -29,6 +31,8 @@ namespace Spreetail.App.UnitTest
         private readonly Mock<IMemberExistsCommandService<string, string>> _mockMemberExistsCommandService;
         private readonly Mock<IAllMembersCommandService<string, string>> _mockAllMembersCommandService;
         private readonly Mock<IItemsCommandService<string, string>> _mockItemsCommandService;
+        private readonly Mock<ITrieService> _mockTrieService;
+        private readonly Mock<IAutoCompleteService> _mockAutoCompleteService;
 
         public RunProgramUnitTest()
         {
@@ -44,6 +48,8 @@ namespace Spreetail.App.UnitTest
             _mockMemberExistsCommandService = new Mock<IMemberExistsCommandService<string, string>>();
             _mockAllMembersCommandService = new Mock<IAllMembersCommandService<string, string>>();
             _mockItemsCommandService = new Mock<IItemsCommandService<string, string>>();
+            _mockTrieService = new Mock<ITrieService>();
+            _mockAutoCompleteService = new Mock<IAutoCompleteService>();
         }
 
         private RunProgram<string,string> GetProgram<T,U>()
@@ -60,7 +66,9 @@ namespace Spreetail.App.UnitTest
                 _mockKeyExistsCommandService.Object,
                 _mockMemberExistsCommandService.Object,
                 _mockAllMembersCommandService.Object,
-                _mockItemsCommandService.Object);
+                _mockItemsCommandService.Object,
+                _mockTrieService.Object,
+                _mockAutoCompleteService.Object);
         }
 
         [Fact]

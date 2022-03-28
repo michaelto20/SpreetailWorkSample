@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Spreetail.Core.Services.AddCommandService;
 using Spreetail.Core.Services.AllMembersCommandService;
+using Spreetail.Core.Services.AutoCompleteService;
 using Spreetail.Core.Services.ClearCommandService;
 using Spreetail.Core.Services.ConsoleService;
 using Spreetail.Core.Services.DictionaryService;
@@ -16,6 +17,7 @@ using Spreetail.Core.Trie;
 using Spreetail.Infrastructure.Domain.ConsoleIO;
 using Spreetail.Infrastructure.Services.AddCommandService;
 using Spreetail.Infrastructure.Services.AllMembersCommandService;
+using Spreetail.Infrastructure.Services.AutoCompleteService;
 using Spreetail.Infrastructure.Services.ClearCommandService;
 using Spreetail.Infrastructure.Services.DictionaryService;
 using Spreetail.Infrastructure.Services.HelpCommandService;
@@ -48,6 +50,8 @@ namespace Spreetail.Infrastructure
             services.AddScoped<IAllMembersCommandService<T, U>, AllMembersCommandService<T, U>>();
             services.AddScoped<IItemsCommandService<T, U>, ItemsCommandService<T, U>>();
             services.AddScoped<ITrieService, TrieService>();
+            services.AddScoped<IAutoCompleteService, AutoCompleteService>();
+
             return services;
         }
     }
