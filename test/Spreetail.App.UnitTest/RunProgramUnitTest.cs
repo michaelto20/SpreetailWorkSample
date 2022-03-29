@@ -71,11 +71,11 @@ namespace Spreetail.App.UnitTest
                 _mockAutoCompleteService.Object);
         }
 
-        [Fact(Skip ="Broke with autocomplete implementation")]
+        [Fact]
         public void RunProgram_Run_CallsHelpCommand_Execut()
         {
             // Arrange
-            _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("help").Returns("exit");
+            _mockAutoCompleteService.SetupSequence( x => x.HandleUserInput()).Returns("help").Returns("exit");
             _mockHelpCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
             var program = GetProgram<string,string>();
 
@@ -86,11 +86,11 @@ namespace Spreetail.App.UnitTest
             _mockHelpCommandService.Verify(x => x.Execute(), Times.Once);
         }
 
-        [Fact(Skip = "Broke with autocomplete implementation")]
+        [Fact]
         public void RunProgram_Run_CallsAddCommand_Execute()
         {
             // Arrange
-            _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("add a b").Returns("exit");
+            _mockAutoCompleteService.SetupSequence( x => x.HandleUserInput()).Returns("add a b").Returns("exit");
             _mockAddCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
             var program = GetProgram<string, string>();
 
@@ -101,11 +101,11 @@ namespace Spreetail.App.UnitTest
             _mockAddCommandService.Verify(x => x.Execute(), Times.Once);
         }
 
-        [Fact(Skip = "Broke with autocomplete implementation")]
+        [Fact]
         public void RunProgram_Run_CallsKeysCommand_Execute()
         {
             // Arrange
-            _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("KEYS").Returns("exit");
+            _mockAutoCompleteService.SetupSequence( x => x.HandleUserInput()).Returns("KEYS").Returns("exit");
             _mockKeyCommandService.Setup(x => x.Validate(It.IsAny<string[]>())).Returns(true);
             var program = GetProgram<string, string>();
 
@@ -116,11 +116,11 @@ namespace Spreetail.App.UnitTest
             _mockKeyCommandService.Verify(x => x.Execute(), Times.Once);
         }
 
-        [Fact(Skip = "Broke with autocomplete implementation")]
+        [Fact]
         public void RunProgram_Run_Exits()
         {
             // Arrange
-            _mockConsoleService.SetupSequence(x => x.ReadLine()).Returns("exit");
+            _mockAutoCompleteService.SetupSequence( x => x.HandleUserInput()).Returns("exit");
             var program = GetProgram<string, string>();
 
             // Act
