@@ -21,5 +21,5 @@ Compiled binaries are not available. You must compile from source. The easy way 
 the OS to run on.
 
 Additionally, through the command line inside the project:
-dotnet build
-dotnet run --project .\src\Spreetail.App\
+- dotnet build
+- dotnet run --project .\src\Spreetail.App\
