@@ -19,3 +19,7 @@ app has no external dependencies outside of the .NET Core runtime environment.
 ## Build Instructions
 Compiled binaries are not available. You must compile from source. The easy way is to publish it through Visual Studio and specify
 the OS to run on.
+
+Additionally, through the command line inside the project:
+dotnet build
+dotnet run --project .\src\Spreetail.App\
