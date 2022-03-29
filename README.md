@@ -1,13 +1,13 @@
 # Spreetail Work Sample
 A simple POC for a dictionary app with the following commands:
-- ADD <key> <value>
+- ADD key value
 - KEYS
 - MEMBERS
-- REMOVE <key> <value>
-- REMOVEALL <key>
+- REMOVE key value
+- REMOVEALL key
 - CLEAR
-- KEYEXISTS <key>
-- MEMBEREXISTS <key> <value>
+- KEYEXISTS key
+- MEMBEREXISTS key value
 - ALLMEMBERS
 - ITEMS
 - EXIT
