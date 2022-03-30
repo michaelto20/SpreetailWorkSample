@@ -26,6 +26,19 @@ namespace Spreetail.Infrastructure.Helpers
             return true;
         }
 
+        public static bool ValidateValue(string value)
+        {
+            // TODO: validate value's type for extensibility
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         /// Make types generic for dictionary
         /// </summary>

@@ -37,7 +37,8 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             }
             else
             {
-                isValid = ValidateCommand(inputsTokens[0]) && ValidateKey(inputsTokens[1]) && ValidateValue(inputsTokens[2]);
+                isValid = Helpers.Helpers.ValidateCommand(inputsTokens[0], "add") &&
+                    Helpers.Helpers.ValidateKey(inputsTokens[1]) && Helpers.Helpers.ValidateValue(inputsTokens[2]);
             }
 
             if (!isValid)
@@ -46,54 +47,23 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
             }
             else
             {
-                // add for autocomplete
-                _trieService.Insert(inputsTokens[1]);
-                _trieService.Insert(inputsTokens[2]);
-                // make types generic for dictionary
-                Key = (T)Convert.ChangeType(inputsTokens[1], typeof(T));
-                Value = (U)Convert.ChangeType(inputsTokens[2], typeof(U));
+                try
+                {
+                    // make types generic for dictionary
+                    Key = Helpers.Helpers.ConvertToGeneric<T>(inputsTokens[1]);
+                    Value = Helpers.Helpers.ConvertToGeneric<U>(inputsTokens[2]);
+
+                    // add for autocomplete
+                    _trieService.Insert(inputsTokens[1]);
+                    _trieService.Insert(inputsTokens[2]);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(") Invalid key or value");
+                    isValid = false;
+                }
             }
 
             return isValid;
-        }
-
-        private bool ValidateCommand(string command)
-        {
-            // first token must be "ADD"
-            if (String.IsNullOrWhiteSpace(command) || !command.Trim().ToLower().Equals("add", StringComparison.InvariantCulture))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private bool ValidateKey(string key)
-        {
-            // TODO: validate key's type for extensibility
-            if (String.IsNullOrWhiteSpace(key))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private bool ValidateValue(string value)
-        {
-            // TODO: validate value's type for extensibility
-            if (String.IsNullOrWhiteSpace(value))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
 
         public bool Execute()

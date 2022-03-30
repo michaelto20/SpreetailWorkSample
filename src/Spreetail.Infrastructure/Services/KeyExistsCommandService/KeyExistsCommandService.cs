@@ -34,7 +34,14 @@ namespace Spreetail.Infrastructure.Services.KeyExistsCommandService
             if (isValid)
             {
                 // make types generic for dictionary
-                Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
+                try
+                {
+                    Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(") Invalid key");
+                    isValid = false;
+                }
             }
             else
             {

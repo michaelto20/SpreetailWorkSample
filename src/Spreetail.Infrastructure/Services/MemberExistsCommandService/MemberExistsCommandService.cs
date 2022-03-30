@@ -31,13 +31,21 @@ namespace Spreetail.Infrastructure.Services.MemberExistsCommandService
             }
             else
             {
-                isValid = Helpers.Helpers.ValidateCommand(inputTokens[0], "memberexists") && Helpers.Helpers.ValidateKey(inputTokens[1]);
+                isValid = Helpers.Helpers.ValidateCommand(inputTokens[0], "memberexists") && Helpers.Helpers.ValidateKey(inputTokens[1])
+                    && Helpers.Helpers.ValidateValue(inputTokens[2]);
             }
 
             if (isValid)
             {
-                Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
-                Value = Helpers.Helpers.ConvertToGeneric<U>(inputTokens[2]);
+                try
+                {
+                    Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
+                    Value = Helpers.Helpers.ConvertToGeneric<U>(inputTokens[2]);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(") Invalid key or value");
+                    isValid = false;
+                }
             }
             else
             {

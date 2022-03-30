@@ -24,13 +24,21 @@ namespace Spreetail.Infrastructure.Services.RemoveCommandService
             }
             else
             {
-                isValid = H.Helpers.ValidateCommand(inputTokens[0], "remove") && H.Helpers.ValidateKey(inputTokens[1]);
+                isValid = H.Helpers.ValidateCommand(inputTokens[0], "remove") && H.Helpers.ValidateKey(inputTokens[1])
+                    && H.Helpers.ValidateValue(inputTokens[2]);
             }
             if (isValid)
             {
-                // make types generic for dictionary
-                Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
-                Value = Helpers.Helpers.ConvertToGeneric<U>(inputTokens[2]);
+                try
+                {
+                    // make types generic for dictionary
+                    Key = Helpers.Helpers.ConvertToGeneric<T>(inputTokens[1]);
+                    Value = Helpers.Helpers.ConvertToGeneric<U>(inputTokens[2]);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(") Invalid key or value");
+                    isValid = false;
+                }
             }
             else
             {

@@ -28,8 +28,15 @@ namespace Spreetail.Infrastructure.Services.MembersCommandService
             }
             if (isValid)
             {
-                // make types generic for dictionary
-                Key = (T)Convert.ChangeType(inputTokens[1], typeof(T));
+                try
+                {
+                    // make types generic for dictionary
+                    Key = (T)Convert.ChangeType(inputTokens[1], typeof(T));
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(") Invalid key");
+                    isValid = false;
+                }
             }
             else
             {
