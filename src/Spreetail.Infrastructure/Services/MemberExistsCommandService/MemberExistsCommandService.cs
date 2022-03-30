@@ -41,7 +41,7 @@ namespace Spreetail.Infrastructure.Services.MemberExistsCommandService
             }
             else
             {
-                Console.WriteLine("Invalid MEMBEREXISTS command");
+                Console.WriteLine(") Invalid MEMBEREXISTS command");
             }
             return isValid;
         }
@@ -52,12 +52,12 @@ namespace Spreetail.Infrastructure.Services.MemberExistsCommandService
             var dict = _dictionaryService.GetDict();
             if(dict.ContainsKey(Key) && dict[Key].Contains(Value))
             {
-                Console.WriteLine("true");
+                Console.WriteLine(") true");
             }
             else
             {
                 isValid = false;
-                Console.WriteLine("false");
+                Console.WriteLine(") false");
             }
             return isValid;
         }

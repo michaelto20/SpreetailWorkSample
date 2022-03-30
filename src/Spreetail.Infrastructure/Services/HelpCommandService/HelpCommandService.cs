@@ -30,7 +30,7 @@ namespace Spreetail.Infrastructure.Services.HelpCommandService
 
             if (!isValid)
             {
-                Console.WriteLine("Invalid help command, try typing: help");
+                Console.WriteLine(")Invalid HELP command, try typing: HELP");
             }
 
             return isValid;
@@ -38,22 +38,22 @@ namespace Spreetail.Infrastructure.Services.HelpCommandService
 
         public bool Execute()
         {
-            Console.WriteLine("------------------------------");
-            Console.WriteLine("-----------Help Menu----------");
-            Console.WriteLine("------------------------------");
-            Console.WriteLine("Valid commands include:");
-            Console.WriteLine("ADD <key> <value>");
-            Console.WriteLine("KEYS");
-            Console.WriteLine("MEMBERS");
-            Console.WriteLine("REMOVE <key> <value>");
-            Console.WriteLine("REMOVEALL <key>");
-            Console.WriteLine("CLEAR");
-            Console.WriteLine("KEYEXISTS <key>");
-            Console.WriteLine("MEMBEREXISTS <key> <value>");
-            Console.WriteLine("ALLMEMBERS");
-            Console.WriteLine("ITEMS");
-            Console.WriteLine("EXIT");
-            Console.WriteLine("------------------------------");
+            Console.WriteLine(") ------------------------------");
+            Console.WriteLine(") -----------Help Menu----------");
+            Console.WriteLine(") ------------------------------");
+            Console.WriteLine(") Valid commands include:");
+            Console.WriteLine(") ADD <key> <value>");
+            Console.WriteLine(") KEYS");
+            Console.WriteLine(") MEMBERS");
+            Console.WriteLine(") REMOVE <key> <value>");
+            Console.WriteLine(") REMOVEALL <key>");
+            Console.WriteLine(") CLEAR");
+            Console.WriteLine(") KEYEXISTS <key>");
+            Console.WriteLine(") MEMBEREXISTS <key> <value>");
+            Console.WriteLine(") ALLMEMBERS");
+            Console.WriteLine(") ITEMS");
+            Console.WriteLine(") EXIT");
+            Console.WriteLine(") ------------------------------");
             return true;
         }
     }

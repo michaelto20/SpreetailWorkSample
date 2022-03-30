@@ -38,7 +38,7 @@ namespace Spreetail.Infrastructure.Services.KeyExistsCommandService
             }
             else
             {
-                Console.WriteLine("Invalid KEYEXISTS command");
+                Console.WriteLine(") Invalid KEYEXISTS command");
             }
             return isValid;
         }
@@ -48,11 +48,11 @@ namespace Spreetail.Infrastructure.Services.KeyExistsCommandService
             bool isValid = true;
             if (_dictionaryService.GetDict().ContainsKey(Key))
             {
-                Console.WriteLine("true");
+                Console.WriteLine(") true");
             }
             else
             {
-                Console.WriteLine("false");
+                Console.WriteLine(") false");
                 isValid = false;
             }
             return isValid;

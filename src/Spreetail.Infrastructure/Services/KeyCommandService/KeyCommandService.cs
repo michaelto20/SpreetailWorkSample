@@ -39,7 +39,7 @@ namespace Spreetail.Infrastructure.Services.KeyCommandService
 
             if (!isValid)
             {
-                Console.WriteLine("Invalid key command, try typing: help");
+                Console.WriteLine(") Invalid KEY command, try typing: HELP");
             }
 
             return isValid;

@@ -91,6 +91,7 @@ namespace Spreetail.App
             do
             {
                 _consoleService.WriteLine("Please enter a command?");
+                Console.Write("> ");
                 userInput = _autoCompleteService.HandleUserInput();
                 if (ShouldExit(userInput)) 
                 {
@@ -126,6 +127,7 @@ namespace Spreetail.App
                 _trieService.Insert(key);
             }
         }
+
 
         private string[] ParserInput(string userInput)
         {

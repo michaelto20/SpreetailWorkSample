@@ -29,6 +29,11 @@ namespace Spreetail.Infrastructure.Services.ItemsCommandService
             {
                 isValid = Helpers.Helpers.ValidateCommand(inputTokens[0], "items");
             }
+
+            if (!isValid)
+            {
+                Console.WriteLine(") Invalid ITEMS command");
+            }
             return isValid;
         }
 

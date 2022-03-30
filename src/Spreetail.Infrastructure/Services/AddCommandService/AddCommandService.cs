@@ -42,7 +42,7 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
 
             if (!isValid)
             {
-                Console.WriteLine("Invalid add command");
+                Console.WriteLine(") Invalid ADD command");
             }
             else
             {
@@ -100,12 +100,12 @@ namespace Spreetail.Infrastructure.Services.AddCommandService
         {
             if(AddToDictionary(Key, Value))
             {
-                Console.WriteLine("Added");
+                Console.WriteLine(") Added");
                 return true;
             }
             else
             {
-                Console.WriteLine("ERROR, member already exists for key");
+                Console.WriteLine(") ERROR, member already exists for key");
                 return false;
             }
         }

@@ -83,7 +83,7 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
             // remove last character
             UserInput.Remove(UserInput.Length - 1, 1);
             ClearCurrentConsoleLine();
-            Console.Write(UserInput.ToString());
+            Console.Write("> " + UserInput.ToString());
         }
 
         private void HandleTab()
@@ -116,7 +116,7 @@ namespace Spreetail.Infrastructure.Services.AutoCompleteService
                 UserInput.Append(CandidateWords[CandidateCount]);
                 
                 // display candidate match
-                Console.Write(UserInput.ToString());
+                Console.Write("> "+UserInput.ToString());
                 CandidateCount++;
             }
         }

@@ -33,7 +33,7 @@ namespace Spreetail.Infrastructure.Services.MembersCommandService
             }
             else
             {
-                Console.WriteLine("Invalid MEMBERS command");
+                Console.WriteLine(") Invalid MEMBERS command");
             }
 
             return isValid;
@@ -55,7 +55,7 @@ namespace Spreetail.Infrastructure.Services.MembersCommandService
             else
             {
                 isValid = false;
-                Console.WriteLine("ERROR, key does not exist");
+                Console.WriteLine(") ERROR, key does not exist");
             }
 
             return isValid;

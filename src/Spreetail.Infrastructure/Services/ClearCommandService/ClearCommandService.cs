@@ -27,7 +27,7 @@ namespace Spreetail.Infrastructure.Services.ClearCommandService
 
             if (!isValid)
             {
-                Console.WriteLine("Invalid CLEAR command");
+                Console.WriteLine(") Invalid CLEAR command");
             }
 
             return isValid;
@@ -41,7 +41,7 @@ namespace Spreetail.Infrastructure.Services.ClearCommandService
                 // clear out dictionary by re-instantiating it
                 _dictionaryService.Reset();
             }
-            Console.WriteLine("Cleared");
+            Console.WriteLine(") Cleared");
             return isValid;
         }
     }

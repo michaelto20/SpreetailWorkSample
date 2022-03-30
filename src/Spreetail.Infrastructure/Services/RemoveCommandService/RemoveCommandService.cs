@@ -34,7 +34,7 @@ namespace Spreetail.Infrastructure.Services.RemoveCommandService
             }
             else
             {
-                Console.WriteLine("Invalid REMOVE command");
+                Console.WriteLine(") Invalid REMOVE command");
             }
 
             return isValid;
@@ -54,12 +54,12 @@ namespace Spreetail.Infrastructure.Services.RemoveCommandService
                 {
                     dict.Remove(Key);
                 }
-                Console.WriteLine("Removed");
+                Console.WriteLine(") Removed");
             }
             else
             {
                 isValid = false;
-                Console.WriteLine("ERROR, key does not exist");
+                Console.WriteLine(") ERROR, key does not exist");
             }
             return isValid;
         }

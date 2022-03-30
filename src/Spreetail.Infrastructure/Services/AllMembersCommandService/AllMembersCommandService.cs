@@ -32,6 +32,11 @@ namespace Spreetail.Infrastructure.Services.AllMembersCommandService
                 isValid = Helpers.Helpers.ValidateCommand(inputTokens[0], "allmembers");
             }
 
+            if (!isValid)
+            {
+                Console.WriteLine(") Invalid ALLMEMBERS command");
+            }
+
             return isValid;
         }
 
